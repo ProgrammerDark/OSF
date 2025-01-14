@@ -23,8 +23,18 @@ router.get('/login', (req, res) => {
     }
 });
 
-router.post("/Login", Login);
-router.post("/Signup", validation, Signup);
-router.get('/find', isAuthenticated, AllUsers);
+router.post("/find", (req,res) => {
+    try {
+        console.log('find request recieved:', req.body);
+        res.status(200).json({ message: 'Find request processed' });
+    } catch (error) {
+        console.error('Error in find:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+})
+
+router.post("/Login",Login)
+router.post("/Signup", validation, Signup)
+router.get('/find', isAuthenticated, AllUsers)
 
 module.exports = router;

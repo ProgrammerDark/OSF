@@ -3,48 +3,33 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign Up</title>
+    <title>Signup</title>
     <link rel="stylesheet" href="styles/signupStyle.css" />
   </head>
   <body>
     <h1>Sign Up</h1>
-    <form id="signup-form" action="/api/v1/users/Signup" method="POST">
-      <input type="text" id="username" name="username" placeholder="Username" />
-      <input
-        type="password"
-        id="password"
-        name="password"
-        placeholder="Password"
-      />
-      <input type="email" id="email" name="email" placeholder="Email" />
-      <button type="submit">Sign Up</button>
+    <form id="signupForm">
+      <input type="text" id="username" placeholder="Username" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Signup</button>
     </form>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-        const form = document.getElementById("signup-form");
-        form.addEventListener("submit", async (event) => {
-          event.preventDefault();
-          const response = await signup();
-          if (response.ok) {
-            alert("Signup successful! You can now log in.");
-            form.reset();
-          } else {
-            alert("Failed to signup. Please try again.");
-          }
-        });
-
-        async function signup() {
-          return await fetch("/api/v1/users/Signup", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              userName: document.getElementById("username").value,
-              password: document.getElementById("password").value,
-              email: document.getElementById("email").value,
-            }),
+      document.getElementById("signupForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        try {
+          const response = await axios.post("/api/v1/users/signup", {
+            userName: document.getElementById("username").value,
+            email: document.getElementById("email").value,
+            password: document.getElementById("password").value,
           });
+          alert("Signup successful");
+        } catch (error) {
+          console.log(`Error from signup: ${error.response ? error.response.data : error.message}`);
+          alert("Signup failed. Please try again.");
         }
-      </script>
+      });
+    </script>
   </body>
 </html>

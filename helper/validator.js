@@ -1,4 +1,6 @@
-const validator = async (req, res, next) => {
+const validator = require('validator')
+
+const validation = async (req, res, next) => {
     try {
         const { userName, password, email} = req.body;
         if(!validator.isLength(userName, { min: 7, max: 30})){
@@ -7,9 +9,9 @@ const validator = async (req, res, next) => {
         if(!validator.isEmail(email)){
             return res.status(400).json({ error: 'Email is not valid' });
         }
-        // if(!validator.isLength(password, { min: 7, max: 30})){
-        //     return res.status(400).json({ error: 'Password must be between 7 to 30 characters' });
-        // }
+        if(!validator.isLength(password, { min: 7, max: 30})){
+            return res.status(400).json({ error: 'Password must be between 7 to 30 characters' });
+        }
         if(!validator.isStrongPassword(password)){
             return res.status(400).json({ error: 'Password must contain atleast one uppercase, one lowercase, one number and one special character' });
         }
@@ -18,4 +20,4 @@ const validator = async (req, res, next) => {
         res.status(500).json({ message: 'error validating user' });
     }
 }
-module.exports = validator;
+module.exports = validation;
